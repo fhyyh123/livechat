@@ -276,3 +276,9 @@ ThinkPHP6.0遵循PSR-2命名规范和PSR-4自动加载规范，并且注意如�
 All rights reserved。
 
 CRMEB® 商标和著作权所有者为西安众邦网络科技有限公司。
+
+
+## 欢迎了解CRMEB多商户商城系统
+![输入图片说明](readme/images/%E5%BC%80%E6%BA%90%E7%AB%99%E5%A4%9A%E5%95%86%E6%88%B7PHP%E7%89%88.jpg)
+这个是售前微信，售后问题请联系技术。
+
