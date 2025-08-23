@@ -129,13 +129,13 @@
                         <div class="pc_customerServer_container_footer_handle">
 
                             <div class="pc_customerServer_container_footer_handle_send" @click="sendText">
-                                <span>发送</span>
+                                <span>Send</span>
                             </div>
 
                         </div>
                         <div class="pc_customerServer_container_footer_copyright" @click="tolink"
                              v-if="upperData.noCanClose != '1' && upperData.windowStyle != `center`">
-                            <span>CRMChat开源客服系统</span>
+
                         </div>
                         <!-- 相关操作结束 -->
 
@@ -148,7 +148,7 @@
                     <div class="advertisement">
                         <div v-html="advertisement"></div>
                         <div class="copyright" @click="tolink">
-                            <span>CRMChat开源客服系统</span>
+
                         </div>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
         computed: {
             records() {
                 return this.chatServerData.serviceList.map((item, index) => {
-                    item.time = this.$moment(item.add_time * 1000).format('MMMDo H:mm')
+                    item.time = this.$moment(item.add_time * 1000).locale('en').format('MMM D H:mm')
                     if (index) {
                         if (
                             item.add_time -
@@ -208,7 +208,7 @@
                 console.log(321);
             },
             scrollHandler(e) {
-                console.log('滑动到顶部了');
+                console.log('Sliding to the top');
                 this.isLoad = true;
                 setTimeout(() => {
                     this.isLoad = false;

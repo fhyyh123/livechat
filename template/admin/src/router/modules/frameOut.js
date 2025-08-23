@@ -79,7 +79,7 @@ export default [
 		path: '/chat/index',
 		name: 'customerServerRedirect',
 		meta: {
-			title: '联系客服'
+			title: 'Contact Customer Service'
 		},
 		component: () => import('@/pages/kefu/externalConnection/index')
 	},
@@ -87,7 +87,7 @@ export default [
 		path: '/chat/pc',
 		name: 'customerServerPc',
 		meta: {
-			title: '联系客服pc'
+			title: 'Contact Customer Service'
 		},
 		component: () => import('@/pages/kefu/externalConnection/pcCustomerServer')
 	},
@@ -95,7 +95,7 @@ export default [
 		path: '/chat/mobile',
 		name: 'customerServerMobile',
 		meta: {
-			title: '联系客服mobile'
+			title: 'Contact Customer Service mobile'
 		},
 		component: () => import('@/pages/kefu/externalConnection/mobileCustomerServer')
 	},

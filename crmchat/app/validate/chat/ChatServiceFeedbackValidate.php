@@ -20,7 +20,9 @@ class ChatServiceFeedbackValidate extends Validate
     /**
      * @var string[]
      */
-    protected $regex = ['phone' => '/^1[3456789]\d{9}$/'];
+    // 国际手机号: 可选 + 前缀，6-15 位数字，允许空格/连字符/点/括号作为分隔，不允许以分隔符结尾
+    // 逻辑: (?:\d[分隔符]?){5,14}\d  => 共 6-15 位数字
+    protected $regex = ['phone' => '/^\+?(?:\d[\s\-().]?){5,14}\d$/'];
 
     /**
      * @var string[]
@@ -35,9 +37,9 @@ class ChatServiceFeedbackValidate extends Validate
      * @var string[]
      */
     protected $message = [
-        'phone.require'     => '请输入手机号',
-        'phone.regex'       => '手机号格式错误',
-        'content.require'   => '请填写反馈内容',
-        'rela_name.require' => '请填写真实姓名',
+        'phone.require'     => 'Please enter your phone number',
+        'phone.regex'       => 'Phone number format is incorrect',
+        'content.require'   => 'Please fill in the feedback content',
+        'rela_name.require' => 'Please fill in your real name',
     ];
 }

@@ -84,7 +84,7 @@
     <div class="footer_customerServer_container">
       <div class="mobel_customerServer_container_footer">
         <div class="crmchat_link" @click="tolink">
-          <span>CRMChat开源客服系统</span>
+
         </div>
         <div class="mobel_customerServer_container_footer_uploag_image">
           <span class="iconfont">&#xe6ca;</span>
@@ -92,7 +92,7 @@
         </div>
         <div class="mobel_customerServer_container_footer_input">
           <div class="mobel_customerServer_container_footer_input_con">
-            <textarea @keyup.enter="sendText" @focus="textareaInput" class="font" @input="textareaChange($event)" v-model='userMessage' placeholder="请输入内容"></textarea>
+            <textarea @keyup.enter="sendText" @focus="textareaInput" class="font" @input="textareaChange($event)" v-model='userMessage' placeholder="Please enter content"></textarea>
             <p class="font" v-html='pCont'></p>
           </div>
           <!-- <div class="mobel_customerServer_container_footer_input_send" @click="sendText">
@@ -106,7 +106,7 @@
         </div>
         <!-- 发送消息 -->
         <div class="sendMessage" :class="{'sendMessage-primary': userMessage}">
-          <div @click="sendText">发送</div>
+          <div @click="sendText">Send</div>
         </div>
       </div>
       <!-- 表情及图片容器 -->
@@ -153,7 +153,7 @@ export default {
   computed: {
     records() {
       return this.chatServerData.serviceList.map((item, index) => {
-        item.time = this.$moment(item.add_time * 1000).format('MMMDo H:mm')
+        item.time = this.$moment(item.add_time * 1000).locale('en').format('MMM D H:mm')
         if(index) {
           if(
             item.add_time -
@@ -173,19 +173,29 @@ export default {
   },
   methods: {
     onBackPress(){
-      alert(uniWeb)
-      uniWeb.webView.navigateBack({
-        delta: history.length,
-        fail(err){
-          alert(err)
-        },
-      });
+      // 点击头像返回：移除调试 alert，使用安全回退
+      try {
+        if (typeof uniWeb !== 'undefined' && uniWeb && uniWeb.webView) {
+          uniWeb.webView.navigateBack({
+            delta: history.length,
+            fail(err){
+              console.warn('[navigateBack fail]', err);
+              if (history.length > 1) window.history.back();
+            },
+          });
+        } else {
+          if (history.length > 1) window.history.back();
+        }
+      } catch (e) {
+        console.warn('[onBackPress error]', e);
+        if (history.length > 1) window.history.back();
+      }
     },
     handlePopstate() {
-      alert(history.length);
-      uniWeb.webView.navigateBack({
-          delta: history.length,
-      });
+      // 移除调试弹窗
+      if (typeof uniWeb !== 'undefined' && uniWeb && uniWeb.webView) {
+        uniWeb.webView.navigateBack({ delta: history.length });
+      }
       history.pushState(null, null, document.URL);
     },
     textareaChange(e) {

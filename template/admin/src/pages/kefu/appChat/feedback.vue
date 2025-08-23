@@ -2,7 +2,7 @@
     <div>
         <div class="feedback" :class="change === true ? 'on' : ''">
             <div class="feedback-header acea-row">
-                <span class="sp1">商城客服已离线</span>
+                <span class="sp1">Customer service not online</span>
                 <div>
                     <!--<Icon type="md-remove" color="#fff" size="18" class="mr10"/>-->
                     <Icon type="md-close" color="#fff" size="18" @click="close"/>
@@ -15,25 +15,25 @@
                 <div>
                     <Form :model="formItem" ref="formItem" class="pl15" :rules="ruleValidate">
                         <FormItem prop="rela_name">
-                            <Input v-model="formItem.rela_name" placeholder="请输入您的姓名"></Input>
+                            <Input v-model="formItem.rela_name" placeholder="Please enter your name"></Input>
                         </FormItem>
                         <FormItem prop="phone">
-                            <Input v-model="formItem.phone" placeholder="请输入您的联系电话"></Input>
+                            <Input v-model="formItem.phone" placeholder="Please enter your phone number"></Input>
                         </FormItem>
                         <FormItem prop="content">
-                            <Input v-model="formItem.content" class="mb10" type="textarea" placeholder="请输入留言内容"></Input>
+                            <Input v-model="formItem.content" class="mb10" type="textarea" placeholder="Please enter your message"></Input>
                         </FormItem>
                         <FormItem>
-                            <Button type="primary" @click="handleSubmit('formItem')" style="width: 100%">提交留言</Button>
+                            <Button type="primary" @click="handleSubmit('formItem')" style="width: 100%">Submit</Button>
                         </FormItem>
                     </Form>
                 </div>
             </div>
             <div class="sure" v-if="isShow">
                  <div class="sure-yuan"><Icon type="md-checkmark" color="#fff" size="30"/></div>
-                <div class="sp1 mb10">提交成功</div>
-                <div class="sp2 mb30">您的信息提交成功，我们会尽快与您取得联系！</div>
-                <Button type="primary" @click="close">好的</Button>
+                <div class="sp1 mb10">Submission successful</div>
+                <div class="sp2 mb30">Your information has been submitted successfully, and we will contact you as soon as possible!</div>
+                <Button type="primary" @click="close">OK</Button>
             </div>
 
         </div>
@@ -48,7 +48,7 @@
         props: {
             change: Boolean
         },
-        data() {
+        data () {
             return {
                 isShow: false,
                 formItem: {
@@ -59,19 +59,38 @@
                 notice: '',
                 ruleValidate: {
                     rela_name: [
-                        { required: true, message: '请输入您的姓名', trigger: 'blur' }
+                        { required: true, message: 'Please enter your name', trigger: 'blur' }
                     ],
                     content: [
-                        { required: true, message: '请输入留言内容', trigger: 'blur' }
+                        { required: true, message: 'Please enter your message', trigger: 'blur' }
                     ],
                     phone: [
-                        { required: true, message: '请填写手机号码', trigger: 'change' },
-                        { pattern: /^1[3456789]\d{9}$/, message: "手机号码格式不正确", trigger: "blur" }
+                        { required: true, message: 'Please enter your phone number', trigger: 'blur' },
+                        {
+                            validator: (rule, value, callback) => {
+                                if (!value) { // required 已处理
+                                    return callback();
+                                }
+                                // 去掉所有非数字计算长度
+                                const digits = value.replace(/\D/g, '');
+                                // E.164: 6-15 位数字
+                                if (digits.length < 6 || digits.length > 15) {
+                                    return callback(new Error('Invalid phone number format'));
+                                }
+                                // 允许 + 开头及空格 - ( ) . 分隔
+                                const compact = value.replace(/[\s\-().]/g, '');
+                                if (!/^\+?\d{6,15}$/.test(compact)) {
+                                    return callback(new Error('Invalid phone number format'));
+                                }
+                                return callback();
+                            },
+                            trigger: 'blur'
+                        }
                     ]
                 }
             }
         },
-        mounted() {
+        mounted () {
             this.getNotice();
         },
         methods: {
@@ -89,16 +108,16 @@
                 })
             },
             close: function () {
-                this.$emit("closeChange", false);
+                this.$emit('closeChange', false);
             },
             // 广告
-            getNotice() {
+            getNotice () {
                 feedbackDataApi().then((res) => {
                     this.notice = res.data.feedback;
                 }).cache(err => {
                     this.$Message.error(err.msg);
                 });
-            },
+            }
         }
     }
 </script>

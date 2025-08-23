@@ -12,6 +12,7 @@
     <Layout>
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange" @on-reload="handleReload">
+          <Button class="clear-cache-btn" type="warning" ghost :loading="clearingCache" @click="clearConfigCache">清理缓存</Button>
           <user :message-unread-count="unreadCount" :user-avatar="userAvatar" />
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local" />
           <header-notice></header-notice>
@@ -60,6 +61,7 @@ import { getLogo } from '@/api/common';
 import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-small.png'
 import maxLogo from '@/assets/images/logo2.png'
+import request from '@/libs/request'
 import './main.less'
 export default {
   name: 'Main',
@@ -84,7 +86,8 @@ export default {
       isFullscreen: false,
       reload: true,
       screenWidth: '',
-      openImage: true
+      openImage: true,
+      clearingCache: false
     }
   },
   computed: {
@@ -206,6 +209,20 @@ export default {
         // if (Setting.showProgressBar) iView.LoadingBar.finish()
       })
     },
+    clearConfigCache(){
+      if(this.clearingCache) return;
+      this.clearingCache = true;
+      request({
+        url: 'setting/config/clear_cache',
+        method: 'post'
+      }).then(res=>{
+        this.$Message.success(res.msg || '缓存已清理');
+      }).catch(()=>{
+        this.$Message.error('清理失败');
+      }).finally(()=>{
+        this.clearingCache = false;
+      })
+    },
     clear() {
       this.openImage = false;
     },
@@ -286,5 +303,13 @@ export default {
   top: 0;
   left: 0;
   z-index: 1000;
+}
+.clear-cache-btn {
+  float: right;
+  height: 28px;
+  line-height: 26px;
+  margin-top: 18px; // (64-28)/2
+  margin-right: 12px;
+  padding: 0 14px;
 }
 </style>

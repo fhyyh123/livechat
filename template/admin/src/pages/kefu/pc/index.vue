@@ -111,7 +111,7 @@
         <div class="right_menu">
           <rightMenu :isTourist="tourist" :uid="userActive.to_user_id" :webType="userActive.type" @bindPush="bindPush"></rightMenu>
           <div class="crmchat_link" @click="tolink">
-            <span>CRMChat开源客服系统</span>
+
           </div>
         </div>
       </div>
@@ -236,7 +236,8 @@ export default {
     },
     records() {
       return this.chatList.map((item, index) => {
-        item.time = this.$moment(item.add_time * 1000).format('MMMDo H:mm')
+        // 强制使用英文月份与日期后缀，避免全局 zh-cn 设置导致出现 “月”
+        item.time = this.$moment(item.add_time * 1000).locale('en').format('MMM D H:mm')
         if(index) {
           if(
             item.add_time -
@@ -479,7 +480,7 @@ export default {
       this.oldHeight = 0
       this.isScroll = true
       if(data) {
-        window.document.title = data.nickname ? `正在和${data.nickname}对话中 - ${this.kefuInfo.site_name}` : '正在和游客对话中 - ' + this.kefuInfo.site_name
+        window.document.title = data.nickname ? `Currently in conversation with ${data.nickname} - ${this.kefuInfo.site_name}` : '正在和游客对话中 - ' + this.kefuInfo.site_name
 
         this.bus.pageWs.then((ws) => {
           ws.send({

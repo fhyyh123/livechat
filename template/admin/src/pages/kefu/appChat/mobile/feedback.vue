@@ -2,23 +2,23 @@
 	<div class="feedback-wrapper">
 		<div class="head">
 			<div class="left-wrapper">
-				<div class="title">商城客服已离线</div>
+				<div class="title">Customer service not online</div>
 				<div class="txt">{{feedback}}</div>
 			</div>
 			<div class="img-box"><img src="@/assets/images/feed-icon.png" mode="" /></div>
 		</div>
 		<div class="main">
-			<div class="title">我要反馈</div>
+			<div class="title">Feedback</div>
 			<div class="input-box">
-				<Input type="text" placeholder="请输入您的姓名" v-model="name" />
+				<Input type="text" placeholder="Please enter your name" v-model="name" />
 			</div>
 			<div class="input-box">
-				<Input type="text" placeholder="请输入您的联系电话" v-model="phone" />
+				<Input type="text" placeholder="Please enter your phone number" v-model="phone" />
 			</div>
 			<div class="input-box">
-				<Input type="textarea" placeholder="请填写内容" v-model="con" />
+				<Input type="textarea" placeholder="Please fill in the content" v-model="con" />
 			</div>
-			<Button class="sub_btn" @click="subMit" :disabled="isDisabled">提交</Button>
+			<Button class="sub_btn" @click="subMit" :disabled="isDisabled">Submit</Button>
 		</div>
 	</div>
 </template>
@@ -45,28 +45,37 @@
 					this.feedback = res.data.feedback
 				})
 			},
-			subMit(){
-				if(!this.name){
-					return this.$Message.error('请填写姓名')
+				subMit () {
+					if (!this.name) {
+						return this.$Message.error('Please enter your name')
+					}
+					// 国际号码校验：支持可选 +，去除分隔符后 6-15 位数字 (E.164 范围)
+					if (!this.phone || !this.isValidPhone(this.phone)) {
+						return this.$Message.error('Please enter a valid international phone number')
+					}
+					if (!this.con) {
+						return this.$Message.error('Please fill in the content')
+					}
+					this.isDisabled = true
+					feedbackFromApi({
+						rela_name: this.name,
+						phone: this.phone,
+						content: this.con
+					}).then(res => {
+						this.$Message.success(res.msg)
+						this.$router.go(-1)
+					}).catch(error => {
+						this.$Message.error(error.msg)
+					})
+				},
+				// 校验国际电话；允许空格、短横线、括号、点作为分隔符
+				isValidPhone (val) {
+					if (!val) return false
+					const digits = val.replace(/\D/g, '')
+					if (digits.length < 6 || digits.length > 15) return false
+					const compact = val.replace(/[\s\-().]/g, '')
+					return /^\+?\d{6,15}$/.test(compact)
 				}
-				if(!this.phone || !(/^1(3|4|5|7|8|9|6)\d{9}$/i.test(this.phone))){
-					return this.$Message.error('请填写正确的手机号码')
-				}
-				if(!this.con){
-					return this.$Message.error('请填写内容')
-				}
-				this.isDisabled = true
-				feedbackFromApi({
-					rela_name:this.name,
-					phone:this.phone,
-					content:this.con
-				}).then(res=>{
-					this.$Message.success(res.msg)
-					this.$router.go(-1)
-				}).catch(error=>{
-					this.$Message.error(error.msg)
-				})
-			}
 		}
 	}
 </script>

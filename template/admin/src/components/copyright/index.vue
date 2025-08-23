@@ -11,24 +11,8 @@ export default {
   name: 'i-copyright',
   data () {
     return {
-      links: [
-        {
-          title: '官网',
-          key: '官网',
-          href: 'https://www.crmeb.com'
-        },
-        {
-          title: '社区',
-          key: '社区',
-          href: 'http://bbs.crmeb.net'
-        },
-        {
-          title: '文档',
-          key: '文档',
-          href: 'https://help.crmeb.net'
-        }
-      ],
-      copyright: 'Copyright © 2021 西安众邦网络科技有限公司'
+
+      copyright: 'Copyright © 2025 Master Lee'
     }
   },
   mounted () {

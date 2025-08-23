@@ -58,7 +58,7 @@ class SystemConfigValidata extends Validate
         'config_export_to_tel' => 'mobile|number',
         'config_export_to_address' => 'chsAlphaNum|length:10,100',
         'config_export_siid' => 'alphaNum|length:10,50',
-        'service_feedback' => 'length:10,90',
+        'service_feedback' => 'length:10,180',
         'thumb_big_height' => 'number|egt:0',
         'thumb_big_width' => 'number|egt:0',
         'thumb_mid_height' => 'number|egt:0',

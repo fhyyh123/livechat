@@ -300,6 +300,7 @@ Route::group('api', function () {
             Route::get('config/kefu', 'system.Config/getKefuIcon')->option(['real_name' => '获取客服图标上传配置']);
 
             Route::post('config/kefu', 'system.Config/setKefuIcon')->option(['real_name' => '保存客服图标上传配置']);
+            Route::post('config/clear_cache', 'system.Config/clear_cache')->option(['real_name' => '清理系统配置缓存']);
             //组合数据全部
             Route::get('group_all', 'system.Group/getGroup')->option(['real_name' => '组合数据全部']);
             //组合数据头部

@@ -330,4 +330,14 @@ class Config extends AuthController
         ]);
     }
 
+    /**
+     * 主动清理系统配置缓存（前端可加按钮调用）
+     * @return \think\Response|array
+     */
+    public function clear_cache()
+    {
+        \crmeb\services\SystemConfigService::clear();
+        return $this->success('缓存已清理');
+    }
+
 }

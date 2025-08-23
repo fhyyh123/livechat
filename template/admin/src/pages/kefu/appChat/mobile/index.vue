@@ -209,7 +209,7 @@ export default {
     },
     records() {
       return this.chatList.map((item, index) => {
-        item.time = this.$moment(item.add_time * 1000).format('MMMDo h:mm')
+        item.time = this.$moment(item.add_time * 1000).locale('en').format('MMM D h:mm')
         if(index) {
           if(
             item.add_time -
