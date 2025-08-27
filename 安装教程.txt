@@ -1,0 +1,54 @@
+
+PHP部分
+一、安装PHP插件：fileinfo、redis、swoole4。
+二、删除PHP对应版本中的 proc_open禁用函数。
+	重载PHP配置并重启。
+站点配置部分
+一、设置网站运行目录public，
+二、设置PHP版本选择纯静态。
+三、可选项如有需求则开启SSL,配置SSL证书，开启强制https域名。
+四、添加反向代理。
+	代理名称随意填写,尽量为英文,添加目标URL:http://127.0.0.1:20108,点击提交保存配置。替换以下配置文件内容。
+#PROXY-START/
+
+location ^~ /
+{
+    proxy_pass http://127.0.0.1:20108;
+    proxy_http_version 1.1;
+    proxy_read_timeout 360s;   
+    proxy_redirect off; 
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+
+    add_header X-Cache $upstream_cache_status;
+
+    #Set Nginx Cache
+
+
+    set $static_fileLzXnun8E 0;
+    if ( $uri ~* "\.(gif|png|jpg|css|js|woff|woff2)$" )
+    {
+     set $static_fileLzXnun8E 1;
+     expires 12h;
+        }
+    if ( $static_fileLzXnun8E = 0 )
+    {
+    add_header Cache-Control no-cache;
+    }
+}
+
+#PROXY-END/
+
+
+一、切换PHP命令行版本和站点一致。
+二、项目根目录下执行启动命令，启动swoole。命令：sudo -u www php think swoole restart
+
+程序安装部分
+一、输入域名，执行程序一键安装。
+二、安装完成后必须重启swoole
+三、恭喜您，安装完成！
+多项目部署：同服务器多项目部署，请务必在点击最下方 多项目部署配置，前些缓存前缀！
