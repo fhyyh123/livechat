@@ -5,10 +5,6 @@
   本系统(CRMChat)是采用Swoole4+Tp6+Redis+Vue+Mysql开发的独立高性能客服系统，客服系统用户端支持Pc端、移动端、小程序、文章中接入客服，利用超链接、网页内嵌、二维码、定制对接等方式让网上所有通道都可以快速通过本系统联系到商家，商家端支持Pc端、移动端（App）随时随地接收到用户的各种咨询，商家可以添加话术库、也可以对用户进行分组、加标签、加备注进行管理，是一款互联网链接商家的一个桥梁，也是商家客户管理的工具，本开源项目遵循最开放的木兰协议，可以随意使用。商家端APP也不用您自己辛苦上架了，我们提供App工具可以直接下载配置使用， **让您快速拥有一套强大的私有客服系统** 。在使用过程中遇到问题随时留言，也欢迎各位大神参与本项目一起完善！！！
 > 如果对您有帮助，您可以点右上角 "Star" 支持一下 谢谢！
 
-### 演示信息 从2022年5月16日开始演示站点将不在提供聊天演示，请自行搭建！
-#### 用户端访问<a target="_blank" href='http://chat.crmeb.net/demo/index.html'>【点击体验】</a>
-#### PC客服端访问 <a target="_blank" href="http://chat.crmeb.net/kefu/pc_list">【点击体验】</a>账号密码：kefu kefu123
-#### 管理后台演示 <a target="_blank" href="http://chat.crmeb.net/admin">【点击体验】</a>账号密码：demo demo
 #### 客服端app：安卓app下载,目前APP Store,小米,华为,oppo，vivo应用商店搜索"CRMchat"都可下载
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0918/160600_24741898_1491977.png "屏幕截图.png")
 
@@ -44,41 +40,6 @@
 后台访问地址：http://域名/admin 
 
 客服后台访问地址：http://域名/kefu
-
-### 命令文档
-#### swoole命令文档 <a target="_blank" href='https://gitee.com/ZhongBangKeJi/CRMChat/wikis/pages/preview?sort_id=4267027&doc_id=1539498'>点击查看</a>
-#### 应用KEY命令文档 <a target="_blank" href='https://gitee.com/ZhongBangKeJi/CRMChat/wikis/pages/preview?sort_id=4267028&doc_id=1539498'>点击查看</a>
-#### 命令行安装文档 <a target="_blank" href='https://gitee.com/ZhongBangKeJi/CRMChat/wikis/pages/preview?sort_id=4267030&doc_id=1539498'>点击查看</a>
-
-### 历史版本
-
-**v1.2.0版本** 
-1. 优化消息发送改为接口发送，socket辅助；
-2. 优化网络检测改为网路请求检测；
-3. 修复欢迎语发送问题
-4. 修复小程序端返回多次问题
-5. 修复超链接的形式嵌入客服关闭后收不到消息问题
-6. 修复安装SQL兼容MYSQL8.0
-7. 修复APP自动升级BUG问题
-8. 修复后台查看聊天记录翻页BUG问题
-9. 修复安装TOKEN不勾选演示数据更新问题
-
- **v1.1.0版本** 
-1. 新增用户标签、分组增加排序功能
-2. 客服图标增加自定义上传
-3. 后台增加客服聊天记录
-4. 后台增加客服所及二维码和复制客服连接
-5. 增加用户端站点统计
-6. 客服APP增加聊天用户删除
-7. 客服APP增加在线升级
-8. 客服APP增加客户列表筛选
-
- **v1.0.0版本** 
-1. 客服聊天功能
-2. 客服自动回复功能增加
-3. 客服欢迎语功能增加
-4. 客服用户管理增加
-5. 客服使用文档增加
 
 ### 开发规范
 #### 命名规范
@@ -262,24 +223,3 @@ ThinkPHP6.0遵循PSR-2命名规范和PSR-4自动加载规范，并且注意如�
 
 > 基于 TP6+Swoole4 开发 
   运行环境要求PHP7.1 ~ 7.4。不支持windows环境运行
-
-### 开源交流群（群人数已达200+，请添加个人企业微信，邀请进群，进群请备注：CRMCHAT）
-
-加群请写备注 **CRMCHAT** 
-![输入图片说明](readme/images/image.png)
-
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2017-2024 by [CRMEB](http://www.crmeb.com)
-
-All rights reserved。
-
-CRMEB® 商标和著作权所有者为西安众邦网络科技有限公司。
-
-
-## 欢迎了解CRMEB多商户商城系统
-![输入图片说明](readme/images/%E5%BC%80%E6%BA%90%E7%AB%99%E5%A4%9A%E5%95%86%E6%88%B7PHP%E7%89%88.jpg)
-
-这个是售前微信，售后问题请联系技术。
-
