@@ -64,6 +64,10 @@
 
                     </div>
 
+                    <!-- 已读 / 未读 标识：仅对当前客服发送的消息展示 -->
+                    <div v-if="kefuInfo.user_ids && kefuInfo.user_ids.indexOf(item.user_id) !== -1" class="read-flag">
+                      <span :class="{'read': item.is_read == 1}">{{ item.is_read == 1 ? '已读' : '未读' }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -307,6 +311,13 @@ export default {
       }
     };
 
+    // 页面可见时批量上报 front_read
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this.sendFrontRead();
+      }
+    });
+
 
   },
   methods: {
@@ -385,6 +396,19 @@ export default {
               "#chat_scroll"
             ).offsetHeight;
           });
+        });
+
+        // 已读回执处理：当对方读取当前客服发送的消息时更新本地状态
+        ws.$on('read_ack', (data) => {
+          // data: {from_user_id, to_user_id}
+          // 规则：如果回执中的 from_user_id 等于当前客服自身 user_id，说明是对方阅读了客服发送的消息
+          if (this.kefuInfo.user_id && data && data.from_user_id === this.kefuInfo.user_id) {
+            this.chatList.forEach(msg => {
+              if (msg.user_id === this.kefuInfo.user_id && msg.to_user_id === data.to_user_id) {
+                msg.is_read = 1;
+              }
+            });
+          }
         });
 
         ws.$on('recored',(data)=>{
@@ -490,6 +514,8 @@ export default {
             type: "to_chat",
           });
           this.toChat = true
+          // 切换会话后立即发送 front_read 置已读
+          this.sendFrontRead();
         });
         this.getChatList()
       } else {
@@ -505,6 +531,16 @@ export default {
       }
 
 
+    },
+    // 发送 front_read 事件（窗口激活或会话切换）
+    sendFrontRead() {
+      if (!this.userActive || !this.userActive.to_user_id) return;
+      this.bus.pageWs && this.bus.pageWs.then(ws => {
+        ws.send({
+          type: 'front_read',
+          data: { id: this.userActive.to_user_id }
+        });
+      });
     },
     msgClose(e) {
       this.isTransfer = false
@@ -561,7 +597,8 @@ export default {
         appid: this.kefuInfo.appid,
         other: other || {},
         type: 0,
-          guid: guid
+          guid: guid,
+        is_read: 0 // 本地初始为未读，等待 read_ack 更新
       };
     },
     send(type, data) {
@@ -737,6 +774,7 @@ textarea.ivu-input {
 
           .flex-box {
             display: flex;
+                align-items: flex-end;
           }
 
           .avatar {
@@ -817,6 +855,17 @@ textarea.ivu-input {
                 .sku {
                   margin: 1px 0;
                   color: #999999;
+                }
+              }
+
+              .read-flag {
+                margin-left: 6px;
+                font-size: 12px;
+                color: #999;
+                line-height: 1;
+
+                span.read {
+                  color: #4caf50;
                 }
               }
             }
