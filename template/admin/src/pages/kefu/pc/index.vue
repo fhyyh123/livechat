@@ -538,7 +538,7 @@ export default {
       this.bus.pageWs && this.bus.pageWs.then(ws => {
         ws.send({
           type: 'front_read',
-          data: { id: this.userActive.to_user_id }
+          data: { other_user_id: this.userActive.to_user_id }
         });
       });
     },
