@@ -397,6 +397,52 @@ abstract class BaseHandler
     }
 
     /**
+     * 前端窗口激活/可见时主动上报已读
+     * 参数: other_user_id (对方用户ID)
+     * 可扩展: message_ids => [id1,id2,...] 精确已读（当前先整会话）
+     * 推送: read_ack
+     * @param array $data
+     * @param Response $response
+     * @return \think\response\Json|void|null
+     */
+    public function front_read(array $data = [], Response $response)
+    {
+        $otherUserId = (int)($data['other_user_id'] ?? 0);
+        if (!$otherUserId) {
+            return $response->message('err_tip', ['msg' => '参数错误']);
+        }
+        $res = $this->room->get($this->fd);
+        if (!$res) {
+            return $response->fail('用户不存在');
+        }
+        $currentUserId = $res['user_id'];
+        if ($currentUserId == $otherUserId) {
+            return $response->message('read_ack', ['from_user_id' => $otherUserId, 'to_user_id' => $currentUserId]);
+        }
+        try {
+            /** @var ChatServiceDialogueRecordServices $logServices */
+            $logServices = app()->make(ChatServiceDialogueRecordServices::class);
+            // 批量更新未读为已读
+            $logServices->update(['user_id' => $otherUserId, 'to_user_id' => $currentUserId, 'is_read' => 0], ['is_read' => 1, 'type' => 1]);
+            // 清空会话未读计数
+            /** @var ChatServiceRecordServices $serviceRecored */
+            $serviceRecored = app()->make(ChatServiceRecordServices::class);
+            $serviceRecored->update(['user_id' => $currentUserId, 'to_user_id' => $otherUserId], ['mssage_num' => 0]);
+        } catch (\Throwable $e) {
+            Log::error('front_read 更新失败:' . $e->getMessage());
+        }
+        $ack = ['from_user_id' => $otherUserId, 'to_user_id' => $currentUserId];
+        // 推送给自己
+        $this->manager->pushing([$this->fd], $response->message('read_ack', $ack)->getData());
+        // 推送给对方所有连接
+        $otherFds = $this->manager->getUserIdByFds($otherUserId);
+        if ($otherFds) {
+            $this->manager->pushing($otherFds, $response->message('read_ack', $ack)->getData());
+        }
+        return null;
+    }
+
+    /**
      * @param array $data
      * @param Response $response
      * @return \think\response\Json
