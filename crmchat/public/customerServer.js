@@ -452,10 +452,16 @@ initCustomerServer.prototype.runInit = function () {
 //初始化
 initCustomerServer.prototype.init = function () {
     request(this.baseUrl + '/api/mobile/service/icon', 'get', null, this.settingObj.token).then(res => {
-        this.settingObj.pcIcon = res.data.icon
-        this.settingObj.mobileIcon = res.data.icon
+        // 仅在接口返回有效 icon 时覆盖，否则保留已有（自定义或默认 base64）
+        if (res && res.data && res.data.icon) {
+            this.settingObj.pcIcon = res.data.icon;
+            this.settingObj.mobileIcon = res.data.icon;
+        }
         this.runInit();
     }).catch(err => {
+        if (window && window.console) {
+            console.warn('[customerServer] 获取自定义客服图标失败, 使用本地默认图标. 原因:', err && (err.msg || err.message || err));
+        }
         this.runInit();
     })
 };
@@ -531,8 +537,9 @@ function ajax(options) {
     xhr.open(options.method, options.url + "?" + params, options.async || true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     if (token) {
-        // 修正请求头字段拼写错误: Authori-zation -> Authorization
+        // 同时写入两种头部名称以兼容后端当前 token_name = 'Authori-zation' 以及标准 Authorization
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        xhr.setRequestHeader("Authori-zation", `Bearer ${token}`);
     }
 
     switch (options.method.toUpperCase()) {
