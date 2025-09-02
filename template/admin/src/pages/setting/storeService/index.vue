@@ -70,9 +70,9 @@
               <Tag color="success" v-if="row.online">在线</Tag>
               <Tag color="default" v-else>下线</Tag>
             </template>
-      <template slot-scope="{row,index}" slot="group_name">
-        <span>{{ (row.chatgroup && row.chatgroup.name) ? row.chatgroup.name : '未分组' }}</span>
-      </template>
+            <template slot-scope="{row,index}" slot="group_name">
+              <span>{{ (row.chatgroup && row.chatgroup.name) ? row.chatgroup.name : '未分组' }}</span>
+            </template>
             <template slot-scope="{ row, index }" slot="action">
               <a @click="edit(row)">编辑</a>
               <Divider type="vertical" v-if="row.status" />
