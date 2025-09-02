@@ -175,12 +175,22 @@ export default {
         } else if (ua.indexOf('Netscape') != -1) {
             browser = 'Netscape';
         }
-        userStatistics({
-            ip: window.returnCitySN ? window.returnCitySN.cip : '',
-            path: window.location.href,
-            source: window.parent.location.href,
-            browser: browser
-        });
+    let parentHref = '';
+    try {
+      if (window.parent && window.parent !== window) {
+        if (window.parent.location && window.parent.location.origin === window.location.origin) {
+          parentHref = window.parent.location.href;
+        }
+      }
+    } catch (e) {
+      // ignore cross-origin
+    }
+    userStatistics({
+      ip: window.returnCitySN ? window.returnCitySN.cip : '',
+      path: window.location.href,
+      source: parentHref,
+      browser: browser
+    });
       },
     redirect(){
       if (this.isMobile && this.deviceType == 'mobile'){

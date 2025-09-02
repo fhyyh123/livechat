@@ -121,7 +121,16 @@ export default {
   },
   created() {
     var _this = this;
-    top != window && (top.location.href = location.href);
+    if (top !== window) {
+      try {
+        const same = top.location.origin === window.location.origin;
+        if (same) {
+          top.location.href = window.location.href;
+        }
+      } catch (e) {
+        // ignore cross-origin access
+      }
+    }
     document.onkeydown = function (e) {
       if (_this.$route.name === 'login') {
         let key = window.event.keyCode;

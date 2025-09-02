@@ -108,7 +108,17 @@ export default {
     })
     this.isMobile = this.$store.state.media.isMobile
     var _this = this;
-    top != window && (top.location.href = location.href);
+    // 防止嵌入外部站点 iframe 时跨域访问 top.location 抛出 SecurityError
+    if (top !== window) {
+      try {
+        const same = top.location.origin === window.location.origin;
+        if (same) {
+          top.location.href = window.location.href;
+        }
+      } catch (e) {
+        // 跨域时忽略
+      }
+    }
     document.onkeydown = function(e) {
       if(_this.$route.name === 'login') {
         let key = window.event.keyCode;
