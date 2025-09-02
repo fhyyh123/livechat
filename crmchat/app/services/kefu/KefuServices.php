@@ -220,7 +220,8 @@ class KefuServices extends BaseServices
         /** @var ChatServiceDialogueRecordServices $logServices */
         $logServices = app()->make(ChatServiceDialogueRecordServices::class);
 
-        $saveData['type'] = $online ? 1 : 0;
+    $saveData['type'] = $online ? 1 : 0; // 原有字段(历史用作在线已读标记)
+    $saveData['is_read'] = $online ? 1 : 0; // 新增显式已读字段
         if (in_array($msnType, [5, 6])) {
             $saveData['other'] = json_encode($other);
         } else {

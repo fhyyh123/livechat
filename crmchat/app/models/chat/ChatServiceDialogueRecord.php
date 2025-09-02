@@ -127,5 +127,15 @@ class ChatServiceDialogueRecord extends BaseModel
     {
         $query->where('is_tourist', $value);
     }
+
+    /**
+     * 是否已读搜索器
+     * @param Model $query
+     * @param $value
+     */
+    public function searchIsReadAttr($query, $value)
+    {
+        $query->where('is_read', $value);
+    }
 }
 

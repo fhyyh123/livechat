@@ -382,7 +382,15 @@ abstract class BaseHandler
                 $service->update(['user_id' => $userId, 'to_user_id' => $toUserId], ['mssage_num' => 0]);
                 /** @var ChatServiceDialogueRecordServices $logServices */
                 $logServices = app()->make(ChatServiceDialogueRecordServices::class);
-                $logServices->update(['user_id' => $toUserId, 'to_user_id' => $userId], ['type' => 1]);
+                $logServices->update(['user_id' => $toUserId, 'to_user_id' => $userId], ['type' => 1, 'is_read' => 1]);
+                // 推送已读回执给对方（可在前端监听 type = read_ack）
+                $otherFd = $this->manager->getUserIdByFds($toUserId);
+                if ($otherFd) {
+                    $this->manager->pushing($otherFd, $response->message('read_ack', [
+                        'from_user_id' => $toUserId,
+                        'to_user_id' => $userId
+                    ]));
+                }
             }
             return $response->message('mssage_num', ['user_id' => $toUserId, 'num' => 0, 'recored' => (object)[]]);
         }
