@@ -117,7 +117,9 @@ function initCustomerServer(option) {
     this.openChat = false;//是否需要打开聊天窗口
     this.settingObj = settingObj;
     this.baseUrl = option.openUrl || location.origin;
-    this.settingObj.openUrl = `${this.baseUrl}/chat/index`; //服务器地址加路由, 若不传入则自动获取引入应用所在服务器的域名
+    // 基础聊天入口地址（用于避免多次 resize 时重复拼接参数）
+    this.baseChatOpenUrl = `${this.baseUrl}/chat/index`;
+    this.settingObj.openUrl = this.baseChatOpenUrl; //服务器地址加路由, 若不传入则自动获取引入应用所在服务器的域名
     this.settingObj.domId = option.customerServerTip || 'customerServerTip'; //浮动客服dom
     this.settingObj.insertDomNode = option.insertDomNode || 'body' // 插入的标签
     this.settingObj.token = option.token; // token为必填项
@@ -162,7 +164,9 @@ function initCustomerServer(option) {
             isShowTip: this.settingObj.isShowTip,
             kefuid: this.settingObj.kefuid
         };
-        this.settingObj.openUrl += `?` + toParams(params) + `&`;
+    // 每次重新设置前先还原为基础地址，避免重复追加参数
+    this.settingObj.openUrl = this.baseChatOpenUrl;
+    this.settingObj.openUrl += `?` + toParams(params) + `&`;
         let customerServerData = '';
         if (this.settingObj.sendUserData && Object.keys(this.settingObj.sendUserData).length) {
             customerServerData = toParams(this.settingObj.sendUserData);
@@ -527,7 +531,8 @@ function ajax(options) {
     xhr.open(options.method, options.url + "?" + params, options.async || true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     if (token) {
-        xhr.setRequestHeader("Authori-zation", `Bearer ${token}`);
+        // 修正请求头字段拼写错误: Authori-zation -> Authorization
+        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
     }
 
     switch (options.method.toUpperCase()) {
