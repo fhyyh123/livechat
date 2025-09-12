@@ -1,13 +1,8 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
+
+
+
+
 
 namespace app\validate\system;
 
@@ -39,13 +34,7 @@ class SystemConfigValidata extends Validate
         'store_brokerage_price' => 'float|egt:0',
         'integral_ratio' => 'float|egt:0|elt:1000|regex:float_two',
         'integral_max_num' => 'number|egt:0',
-        'order_give_integral' => 'float|egt:0|elt:1000',
-        'order_cancel_time' => 'float',
-        'order_activity_time' => 'float',
-        'order_bargain_time' => 'float',
-        'order_seckill_time' => 'float',
-        'order_pink_time' => 'float',
-        'system_delivery_time' => 'float',
+    // 已移除订单相关配置校验 (order_* 与 system_delivery_time)
         'store_free_postage' => 'float',
         'integral_rule_number' => 'number|gt:0',
         'express_rule_number' => 'number|gt:0',
@@ -103,14 +92,7 @@ class SystemConfigValidata extends Validate
         'integral_ratio.elt' => '积分抵用比例必须在0-1000之间',
         'integral_max_num.number' => '积分抵用上限必须为数字',
         'integral_max_num.egt' => '积分抵用上限必须大于等于0',
-        'order_give_integral.float' => '下单赠送积分比例必须为数字',
-        'order_give_integral.egt' => '下单赠送积分比例必须在0-1000之间',
-        'order_give_integral.elt' => '下单赠送积分比例必须在0-1000之间',
-        'order_cancel_time.float' => '普通商品未支付取消订单时间必须为数字',
-        'order_activity_time.float' => '活动商品未支付取消订单时间必须为数字',
-        'order_bargain_time.float' => '砍价商品未支付取消订单时间必须为数字',
-        'order_pink_time.float' => '拼团商品未支付取消订单时间必须为数字',
-        'system_delivery_time.float' => '订单发货后自动收货时间必须为数字',
+    // 已移除订单相关字段错误提示
         'store_free_postage.float' => '满额包邮金额必须为数字',
         'integral_rule_number.number' => '积分倍数必须大于0',
         'express_rule_number.number' => '折扣数必须大于0',

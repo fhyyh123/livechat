@@ -1,13 +1,8 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
+
+
+
+
 
 namespace app\services\chat;
 
@@ -206,10 +201,6 @@ class ChatServiceRecordServices extends BaseServices
                     break;
                 case ChatServiceDialogueRecordServices::MSN_TYPE_VOICE:
                     $message = '[音频]';
-                    break;
-                case ChatServiceDialogueRecordServices::MSN_TYPE_ORDER:
-                case ChatServiceDialogueRecordServices::MSN_TYPE_GOODS:
-                    $message = '[图文]' . ($message['other']['store_name'] ?? '');
                     break;
             }
         }

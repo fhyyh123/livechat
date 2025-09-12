@@ -1,13 +1,8 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
+
+
+
+
 
 namespace app\services\system\config;
 
@@ -368,11 +363,8 @@ class SystemConfigServices extends BaseServices
                 break;
             case 'number':
                 $data['value'] = isset($data['value']) ? json_decode($data['value'], true) : 0;
-                if ($data['menu_name'] == 'integral_max_num' || $data['menu_name'] == 'order_give_integral') {
-                    $formbuider[] = $this->builder->number($data['menu_name'], $data['info'], (float)$data['value'])->info($data['desc'])->precision(0);
-                } else {
-                    $formbuider[] = $this->builder->number($data['menu_name'], $data['info'], (float)$data['value'])->info($data['desc']);
-                }
+                // 去除对已删除字段 order_give_integral 的精度特殊处理
+                $formbuider[] = $this->builder->number($data['menu_name'], $data['info'], (float)$data['value'])->info($data['desc']);
                 break;
             case 'dateTime':
                 $formbuider[] = $this->builder->dateTime($data['menu_name'], $data['info'], $data['value'])->info($data['desc']);

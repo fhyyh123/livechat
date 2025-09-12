@@ -1,13 +1,8 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
+
+
+
+
 
 namespace app\services\chat;
 
@@ -42,22 +37,17 @@ class ChatServiceDialogueRecordServices extends BaseServices
     const MSN_TYPE_IME = 3;
     //音频消息类型
     const MSN_TYPE_VOICE = 4;
-    //商品链接消息类型
-    const MSN_TYPE_GOODS = 5;
-    //订单信息消息类型
-    const MSN_TYPE_ORDER = 6;
+    // (已移除) 原第5商品链接/第6订单信息类型常量，为精简无关业务逻辑
 
     /**
      * 消息类型
-     * @var array  1=文字 2=表情 3=图片 4=语音 5 = 商品链接 6 = 订单类型
+    * @var array  1=文字 2=表情 3=图片 4=语音
      */
     const MSN_TYPE = [
         self::MSN_TYPE_TXT,
         self::MSN_TYPE_EMOT,
         self::MSN_TYPE_IME,
-        self::MSN_TYPE_VOICE,
-        self::MSN_TYPE_GOODS,
-        self::MSN_TYPE_ORDER
+    self::MSN_TYPE_VOICE
     ];
 
     /**

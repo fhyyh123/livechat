@@ -1,13 +1,8 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
+
+
+
+
 
 namespace app\services\system\admin;
 
@@ -82,27 +77,8 @@ class AdminAuthServices extends BaseServices
      */
     protected function authFailAfter($id, $type)
     {
-        try {
-            $postData = request()->post();
-            $rule = trim(strtolower(request()->rule()->getRule()));
-            $method = trim(strtolower(request()->method()));
-            //添加商品退出后事件
-            if ($rule === 'product/product/<id>' && $method === 'post') {
-                $this->saveProduct($id, $postData);
-            }
-        } catch (\Throwable $e) {
-        }
+        // 已移除原对 product/product/<id> POST 请求的商品数据缓存逻辑（不再保留与商品业务耦合的残留）。
     }
 
-    /**
-     * 保存提交数据
-     * @param $adminId
-     * @param $postData
-     */
-    protected function saveProduct($adminId, $postData)
-    {
-        /** @var CacheServices $cacheService */
-        $cacheService = app()->make(CacheServices::class);
-        $cacheService->setDbCache($adminId . '_product_data', $postData, 68400);
-    }
+    // saveProduct 方法已删除
 }
