@@ -199,6 +199,7 @@ CREATE TABLE `eb_chat_service_dialogue_record` (
   `is_tourist` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1=游客模式，0=非游客',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '发送时间',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已读（0：否；1：是；）',
+  `is_read` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已读 0=未读 1=已读',
   `remind` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否提醒过',
   `msn_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '消息类型 1=文字 2=表情 3=图片 4=语音',
   `is_send` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否发送',
