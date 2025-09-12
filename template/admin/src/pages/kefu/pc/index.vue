@@ -403,11 +403,21 @@ export default {
           // data: {from_user_id, to_user_id}
           // 规则：如果回执中的 from_user_id 等于当前客服自身 user_id，说明是对方阅读了客服发送的消息
           if (this.kefuInfo.user_id && data && data.from_user_id === this.kefuInfo.user_id) {
-            this.chatList.forEach(msg => {
-              if (msg.user_id === this.kefuInfo.user_id && msg.to_user_id === data.to_user_id) {
-                msg.is_read = 1;
+              let updated = false;
+              this.chatList.forEach(msg => {
+                if (msg.user_id === this.kefuInfo.user_id && msg.to_user_id === data.to_user_id) {
+                  if (typeof this.$set === 'function') {
+                    this.$set(msg, 'is_read', 1);
+                  } else {
+                    msg.is_read = 1;
+                    updated = true;
+                  }
+                }
+              });
+              // Vue3兼容：强制刷新 chatList
+              if (updated) {
+                this.chatList = [...this.chatList];
               }
-            });
           }
         });
 
